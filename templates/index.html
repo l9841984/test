@@ -1,0 +1,110 @@
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />  
+<style type="text/css">  
+html{height:100%}  
+body{height:100%;margin:0px;padding:0px}  
+#container{height:100%}  
+</style>  
+	
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=D8jN9IosgzLasrD8gnClej1DChZcmITH">
+</script>
+<head>
+	<title>{{title}}</title>
+</head>
+<body>
+<div id="container"></div> 
+<script type="text/javascript"> 
+var map = new BMap.Map("container");    
+var point = new BMap.Point(116.404, 39.915);    
+
+
+var opts = {offset: new BMap.Size(150, 5)} 
+var naviOpt = {type: BMAP_NAVIGATION_CONTROL_ZOOM}
+
+map.centerAndZoom(point, 15);   
+map.addControl(new BMap.NavigationControl(naviOpt));
+map.addControl(new BMap.ScaleControl(opts));    
+map.addControl(new BMap.OverviewMapControl());    
+map.addControl(new BMap.MapTypeControl());    
+map.setCurrentCity("厦门"); // 仅当设置城市信息时，MapTypeControl的切换功能才能可用
+window.setTimeout(function(){  
+    map.panTo(new BMap.Point(116.409, 39.918));    
+}, 2000);             // 初始化地图，设置中心点坐标和地图级别  
+
+
+
+//标注   
+var marker = new BMap.Marker(point);        // 创建标注    
+map.addOverlay(marker);                     // 将标注添加到地图中
+
+</script>  
+
+{{book_list.0}}ffffffffff{{user.name}}
+<br>
+{% if user %}
+{{user.say}} 11111
+{% else %}
+ssssssssss
+{% endif %}
+<br>
+<br>
+{% for book in book_list %}
+<li>{{book}}</li>
+{% endfor %}
+
+<br>
+{% for k,v in user.items %}
+<li>{{forloop.counter}}.{{k}}:{{v}}</li>
+{% endfor %}
+<br>
+{% for emp in emps %}
+<div>{{forloop.counter}}.{{emp.name}}</div>
+{% endfor %}
+{{emps.length}}
+<br>
+{% for emp in emps %}
+<h3>{{emp}}:</h3>
+{% for m in emp.money_set.all %}
+<li>{{m}}</li>
+{%endfor%}
+{%endfor%}
+
+
+</body>
+
+<script>
+
+// 定义一个控件类，即function    
+function ZoomControl(){    
+    // 设置默认停靠位置和偏移量  
+    this.defaultAnchor = BMAP_ANCHOR_BOTTOM_RIGHT;    
+    this.defaultOffset = new BMap.Size(10, 10);    
+}    
+// 通过JavaScript的prototype属性继承于BMap.Control   
+ZoomControl.prototype = new BMap.Control();
+// 自定义控件必须实现initialize方法，并且将控件的DOM元素返回   
+// 在本方法中创建个div元素作为控件的容器，并将其添加到地图容器中   
+ZoomControl.prototype.initialize = function(map){    
+// 创建一个DOM元素   
+ var div = document.createElement("div");    
+// 添加文字说明    
+ div.appendChild(document.createTextNode("放大2级"));    
+ // 设置样式    
+ div.style.cursor = "pointer";    
+ div.style.border = "1px solid gray";    
+ div.style.backgroundColor = "white";    
+ // 绑定事件，点击一次放大两级    
+ div.onclick = function(e){  
+  map.zoomTo(map.getZoom() + 2);    
+ }    
+ // 添加DOM元素到地图中   
+ map.getContainer().appendChild(div);    
+ // 将DOM元素返回  
+ return div;    
+ }
+ 
+ map.addControl(new ZoomControl());
+
+ </script>
+
+
+
